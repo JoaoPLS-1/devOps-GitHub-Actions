@@ -7,3 +7,6 @@ jobs:
     steps:
       - name: Primeiro step do fluxo
         run: echo "The job was automatically triggered by a ${{ github.event_name }} event."
+    steps:
+      - name: data da execução
+        run: echo "14/09/2026"
