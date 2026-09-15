@@ -7,5 +7,9 @@ jobs:
     steps:
       - name: Primeiro step do fluxo
         run: echo "The job was automatically triggered by a ${{ github.event_name }} event."
+      - name: Segundo step do fluxo
+        run: echo "A ação está sendo gerado no Sistema Operacional ${{ runner.os }}."
+      - name: Terceiro step do fluxo
+        run: echo "O repositório que está sendo usado é ${{ github.repository }}."
       - name: data da execução
         run: echo "14/09/2026"
