@@ -49,8 +49,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Testar isolamento de jobs
-        run: cowsay "Teste"
       - name: Publicar no GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
