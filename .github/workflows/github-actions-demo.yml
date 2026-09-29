@@ -17,8 +17,8 @@ jobs:
     name: Validacao e testes
     runs-on: ubuntu-latest
     steps:
-      # - name: Checkout do repositorio
-        # uses: actions/checkout@v4
+      - name: Checkout do repositorio
+        uses: actions/checkout@v4
       - name: Primeiro step do fluxo
         run: echo "The job was automatically triggered by a ${{ github.event_name }} event."
       - name: Segundo step do fluxo
