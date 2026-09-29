@@ -1,74 +1,64 @@
-
 name: GitHub Actions Demonstration e Testes mostrando RAM
-
 run-name: ${{ github.actor }} is testing out GitHub Actions
 
-on: [push]
+on: [push, workflow_dispatch]
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
   validacao:
-    name: Validacao e Testes
+    name: Validacao e testes
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout do repositorio
         uses: actions/checkout@v4
-
       - name: Primeiro step do fluxo
         run: echo "The job was automatically triggered by a ${{ github.event_name }} event."
-
       - name: Segundo step do fluxo
         run: echo "A acao esta sendo gerada no Sistema Operacional ${{ runner.os }}."
-
       - name: Terceiro step do fluxo
         run: echo "O repositorio utilizado e ${{ github.repository }}."
-
       - name: Data da execucao
         run: echo "14/09/2026"
-
-      - name: Explorando o Runner
+      - name: Explorando o Runner - SO, RAM e CPUs
         run: |
           lsb_release -a
           free -h
           nproc
-
-      - name: Smoke Test
+      - name: Smoke Test - index.html
         run: test -f index.html
-
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5
-
-      - name: Preparar artefato
+      - name: Preparar artefato do site
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
 
   publicar-site:
-    name: Publicar Site
+    name: Publicar site
     needs: validacao
     runs-on: ubuntu-latest
-
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
-      - name: Deploy no GitHub Pages
+      - name: Publicar no GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
 
   instalar-ferramenta:
-    name: Testar Ferramenta
+    name: Instalar ferramenta em runner isolado
     runs-on: ubuntu-latest
-
     steps:
-      - name: Instalar cowsay
+      - name: Instalar e testar cowsay
         run: |
           sudo apt-get update
           sudo apt-get install -y cowsay
-          /usr/games/cowsay "Ferramenta instalada!"
+          /usr/games/cowsay "Ferramenta instalada neste job"
