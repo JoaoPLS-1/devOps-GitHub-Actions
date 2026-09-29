@@ -34,6 +34,8 @@ jobs:
           nproc
       - name: Smoke Test - index.html
         run: test -f index.html
+      - name: Erro proposital
+        run: comando_que_nao_existe
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5
       - name: Preparar artefato do site
