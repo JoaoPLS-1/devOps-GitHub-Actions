@@ -40,6 +40,8 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
+      - name: Falha proposital de validacao
+        run: exit 1
 
   publicar-site:
     name: Publicar site
