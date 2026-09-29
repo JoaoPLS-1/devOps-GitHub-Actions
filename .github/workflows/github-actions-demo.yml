@@ -1,17 +1,74 @@
-name: GitHub Actions Demo
+
+name: GitHub Actions Demonstration e Testes mostrando RAM
+
 run-name: ${{ github.actor }} is testing out GitHub Actions
+
 on: [push]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
-  explore-github-actions:
+  validacao:
+    name: Validacao e Testes
     runs-on: ubuntu-latest
+
     steps:
+      - name: Checkout do repositorio
+        uses: actions/checkout@v4
+
       - name: Primeiro step do fluxo
         run: echo "The job was automatically triggered by a ${{ github.event_name }} event."
+
       - name: Segundo step do fluxo
-        run: echo "A ação está sendo gerado no Sistema Operacional ${{ runner.os }}."
+        run: echo "A acao esta sendo gerada no Sistema Operacional ${{ runner.os }}."
+
       - name: Terceiro step do fluxo
-        run: echo "O repositório que está sendo usado é ${{ github.repository }}."
-      - name: data da execução
+        run: echo "O repositorio utilizado e ${{ github.repository }}."
+
+      - name: Data da execucao
         run: echo "14/09/2026"
-      - name: Memory R A M
-        run: lsb_release -a && free -h
+
+      - name: Explorando o Runner
+        run: |
+          lsb_release -a
+          free -h
+          nproc
+
+      - name: Smoke Test
+        run: test -f index.html
+
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Preparar artefato
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+  publicar-site:
+    name: Publicar Site
+    needs: validacao
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy no GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  instalar-ferramenta:
+    name: Testar Ferramenta
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Instalar cowsay
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cowsay
+          /usr/games/cowsay "Ferramenta instalada!"
