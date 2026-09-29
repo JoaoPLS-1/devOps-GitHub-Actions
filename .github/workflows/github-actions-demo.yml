@@ -39,7 +39,7 @@ jobs:
       - name: Preparar artefato do site
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './pasta-inexistente'
+          path: '.'
 
   publicar-site:
     name: Publicar site
